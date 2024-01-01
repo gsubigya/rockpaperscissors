@@ -1,16 +1,20 @@
-import os
-import gtts
-import random
-from playsound import playsound
+import os #to use the OS structure commands
+import gtts #to translate text to speech
+import random #for the random integer generator
+from playsound import playsound #to play the output sound
 
+
+#converts text to speech
 def text_speech(speech):
-    speech_file = gtts.gTTS(speech)
-    speech_file.save("speech.mp3")
-  
-    playsound("speech.mp3")
+    speech_file = gtts.gTTS(speech) #converting text to speech using google text to speech (gTTS)
+    speech_file.save("speech.mp3") #saving the audio output recieved from gTTS 
 
-    os.remove("speech.mp3")
+    playsound("speech.mp3") #used to play the saved audio file
 
+    os.remove("speech.mp3") #used in removing the audio file after use
+
+
+#generates random number to determine computer choice of either rock, paper and scissors
 def random_number():
     r_int = random.randint(0, 2)
     if r_int == 0:
@@ -20,6 +24,8 @@ def random_number():
     elif r_int == 2:
         return "scissors"
 
+
+#checks who wins or weather the game ends on draw
 def check_win(user_choice, comp_choice):
     if user_choice == comp_choice:
         return "-- Its a Draw!"
@@ -32,6 +38,8 @@ def check_win(user_choice, comp_choice):
     else:
         return "-- User won the game this time!"
 
+
+#checks if the input entered by user is valid or not
 def check_value(user_input):
     valid_tpl = ("rock", "scissors", "paper")
     if user_input.lower() in valid_tpl:
@@ -39,6 +47,8 @@ def check_value(user_input):
     else:
         return False
 
+
+#prints the output according the fulfilled conditions
 def output_text(user_choice, comp_choice, result):
     if result == "-- Its a Draw!":
         text_speech(f"You entered {user_choice}. Computer chose {comp_choice}.")
@@ -52,6 +62,8 @@ def output_text(user_choice, comp_choice, result):
         text_speech(f"You entered {user_choice}. Computer chose {comp_choice}.")
         print("-- User won the game this time!")
 
+
+#counts and stores scores of number of draws, computer wins and user wins
 def scores(result, scores_list):
     if result == "-- Its a Draw!":
         scores_list[0] += 1
@@ -61,20 +73,22 @@ def scores(result, scores_list):
         scores_list[2] += 1
     return scores_list
 
+
+#first = draw counts, second = user wins counts and third = computer wins count
 scores_list = [0, 0, 0]
 
-print("\n")
+print("\n") #line break
 
 flag = True
 while flag:
-  
+    #executed when the game is started for the first time
     text_speech("Please enter either Rock, Paper or Scissors : ")
     user_choice = input("Please enter either Rock, Paper or Scissors : ")
     user_choice = user_choice.lower()
 
     check = check_value(user_choice)
 
-    while check is False:
+    while check is False: #executed when the user input is incorrect
         text_speech("Error! Please input Rock, Paper or Scissors.")
         user_choice = input("Choose either Rock, Paper or Sciccors >>>")
         check = check_value(user_choice)
@@ -84,16 +98,18 @@ while flag:
     output_text(user_choice, comp_choice, result)
     scores_list = scores(result, scores_list)
 
-    print("\n")
+    print("\n") #line break
 
-    count = input("Do you like to continue? (yes/no) : ")
+    count = input("Do you like to continue? (yes/no) : ") #executed to know if the user wants to continue the game.
 
     if count.lower() != "yes":
         flag = False
 
+
 else:
-    text_speech("Thank you so much for playing this game!")
+    text_speech("Thank you so much for playing this game!") #executed before final scoreboard is displayed
     
+    #final scoreboard displaying draws, user wins and computer wins
     print(f"""\n\t\t----SCOREBOARD----\n
     \t\tNumber of draws : {scores_list[0]}
     \t\tUser Wins : {scores_list[1]}
